@@ -1,0 +1,45 @@
+# Git files
+.git
+.gitignore
+README.md
+
+# IDE files
+.idea
+*.iml
+.vscode
+.settings
+.project
+.classpath
+
+# Build files
+target/
+*.class
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Container files
+Containerfile
+Dockerfile
+docker-compose*.yml
+podman-compose*.yml
+.dockerignore
+
+# Documentation
+docs/
+*.md
+
+# Test files
+src/test/
+
+# Scripts
+*.sh
+
+# Environment files
+.env*
+!.env.example
