@@ -1,14 +1,24 @@
 spring:
   data:
     mongodb:
+      # Will be overridden by Testcontainers
       uri: mongodb://localhost:27017/rewardsdb-test
-  
+
+  # Disable data initialization in tests
+  profiles:
+    active: test
+
 logging:
   level:
     com.portalsplatform.api: DEBUG
     org.springframework.data.mongodb: WARN
+    org.testcontainers: WARN
 
 api:
   security:
     enabled: true
-    api-key: demo-api-key-12345
+    # Use environment variable with demo fallback for testing
+    api-key: ${TEST_API_KEY:demo-test-key-12345}
+    rate-limit:
+      enabled: true
+      max-requests-per-minute: 100

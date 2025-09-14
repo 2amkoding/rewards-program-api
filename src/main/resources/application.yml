@@ -30,7 +30,8 @@ api:
   security:
     enabled: true
     header-name: X-API-Key
-    api-key: ${API_KEY:demo-api-key-12345}
+    # Development fallback - production should override via environment
+    api-key: ${API_KEY:dev-demo-key-12345}
     rate-limit:
       enabled: true
       max-requests-per-minute: 100
