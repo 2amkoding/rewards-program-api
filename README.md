@@ -216,7 +216,7 @@ See [PODMAN-DEPLOYMENT.md](PODMAN-DEPLOYMENT.md) for complete deployment guide.
 - [ ] Admin dashboard with analytics
 - [ ] Export functionality (CSV/PDF)
 - [ ] Multi-tenant support
-- [ ] Prometheus metrics integration
+- [ ] Prometheus metrics integration0
 - [ ] Circuit breaker pattern
 
 ## 👥 Contributing
