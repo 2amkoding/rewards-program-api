@@ -13,12 +13,19 @@ API_CONTAINER="rewards-api"
 API_IMAGE="localhost/rewards-api:latest"
 MONGO_IMAGE="docker.io/library/mongo:7"
 
-# Environment variables with defaults
+# Load environment variables from file if it exists
+if [ -f ".env.podman" ]; then
+    echo -e "${YELLOW}Loading environment from .env.podman${NC}"
+    export $(grep -v "^#" .env.podman | xargs)
+fi
+
+# Environment variables with defaults (demo-safe fallbacks)
 MONGO_USER="${MONGO_USER:-admin}"
 MONGO_PASSWORD="${MONGO_PASSWORD:-secret}"
-API_KEY="${API_KEY:-demo-api-key-12345}"
+API_KEY="${API_KEY:-charter-demo-api-key-2024}"
 
 echo -e "${GREEN}🚀 Starting Rewards API Deployment with Podman${NC}"
+echo -e "${YELLOW}Security: Using API key from environment variables${NC}\n"
 
 # Function to check if podman machine is running
 check_podman_machine() {
