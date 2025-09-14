@@ -168,6 +168,10 @@ Create transaction:
 
 ### Quick Start with Podman
 
+    # Set up environment (recommended for production)
+    cp .env.podman.example .env.podman
+    # Edit .env.podman with your secure values
+    
     # Deploy everything (MongoDB + API)
     ./deploy-with-podman.sh
 
