@@ -66,10 +66,10 @@ class RewardsServiceImplTest {
         RewardsResponse response = rewardsService.calculateTotalRewards("CUST001");
 
         // Then
-        assertThat(response.getCustomerId()).isEqualTo("CUST001");
-        assertThat(response.getCustomerName()).isEqualTo("John Doe");
-        assertThat(response.getTotalPoints()).isEqualTo(115); // 90 + 25 + 0
-        assertThat(response.getPeriodDescription()).isEqualTo("All time");
+        assertThat(response.customerId()).isEqualTo("CUST001");
+        assertThat(response.customerName()).isEqualTo("John Doe");
+        assertThat(response.totalPoints()).isEqualTo(115); // 90 + 25 + 0
+        assertThat(response.period()).isEqualTo("All time");
 
         verify(customerRepository).findByCustomerId("CUST001");
         verify(transactionRepository).findByCustomerIdOrderByTransactionDateDesc("CUST001");
@@ -99,9 +99,9 @@ class RewardsServiceImplTest {
         RewardsResponse response = rewardsService.calculateTotalRewards("CUST001");
 
         // Then
-        assertThat(response.getTotalPoints()).isEqualTo(0);
-        assertThat(response.getMonthlyPoints()).isEmpty();
-        assertThat(response.getPeriodDescription()).isEqualTo("No transactions found");
+        assertThat(response.totalPoints()).isEqualTo(0);
+        assertThat(response.monthlyPoints()).isEmpty();
+        assertThat(response.period()).isEqualTo("No transactions found");
     }
 
     @Test
@@ -126,9 +126,9 @@ class RewardsServiceImplTest {
         RewardsResponse response = rewardsService.calculateMonthlyRewards("CUST001", yearMonth);
 
         // Then
-        assertThat(response.getTotalPoints()).isEqualTo(90); // 2*20 + 1*50
-        assertThat(response.getMonthlyPoints()).containsEntry(yearMonth, 90);
-        assertThat(response.getPeriodDescription()).isEqualTo("Month: " + yearMonth);
+        assertThat(response.totalPoints()).isEqualTo(90); // 2*20 + 1*50
+        assertThat(response.monthlyPoints()).containsEntry(yearMonth, 90);
+        assertThat(response.period()).isEqualTo("Month: " + yearMonth);
     }
 
     @Test
@@ -145,8 +145,8 @@ class RewardsServiceImplTest {
         RewardsResponse response = rewardsService.calculateRewardsForLastMonths("CUST001", months);
 
         // Then
-        assertThat(response.getTotalPoints()).isEqualTo(115);
-        assertThat(response.getPeriodDescription()).isEqualTo("Last 3 months");
+        assertThat(response.totalPoints()).isEqualTo(115);
+        assertThat(response.period()).isEqualTo("Last 3 months");
     }
 
     @Test
