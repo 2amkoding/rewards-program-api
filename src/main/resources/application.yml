@@ -22,8 +22,18 @@ management:
 
 logging:
   level:
-    com.example.rewards_program_api: DEBUG
-    org.springframework.data.mongodb: DEBUG
+    com.portalsplatform.api: INFO
+    org.springframework.data.mongodb: WARN
+
+# Security Configuration
+api:
+  security:
+    enabled: true
+    header-name: X-API-Key
+    api-key: ${API_KEY:demo-api-key-12345}
+    rate-limit:
+      enabled: true
+      max-requests-per-minute: 100
 
 
 
