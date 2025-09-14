@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/rewardsdb-test
+  
+logging:
+  level:
+    com.portalsplatform.api: DEBUG
+    org.springframework.data.mongodb: WARN
+
+api:
+  security:
+    enabled: true
+    api-key: demo-api-key-12345
