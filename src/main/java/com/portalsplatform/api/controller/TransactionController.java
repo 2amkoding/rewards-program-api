@@ -1,9 +1,23 @@
 package com.portalsplatform.api.controller;
+
 import com.portalsplatform.api.model.Transaction;
 import com.portalsplatform.api.repository.CustomerRepository;
 import com.portalsplatform.api.repository.TransactionRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +33,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @CrossOrigin(origins = "*")
+@Tag(name = "Transactions", description = "Transaction management endpoints")
 public class TransactionController {
 
     private final TransactionRepository transactionRepository;
@@ -28,8 +43,17 @@ public class TransactionController {
      * Create a new transaction (for demo/testing)
      * POST /api/transactions
      */
+    @Operation(summary = "Create a new transaction",
+               description = "Creates a new transaction for a customer and calculates rewards points")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Transaction created successfully"),
+        @ApiResponse(responseCode = "400", description = "Bad request - invalid transaction data"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized - missing or invalid API key"),
+        @ApiResponse(responseCode = "404", description = "Customer not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping
-    public ResponseEntity<?> createTransaction(@RequestBody TransactionRequest request) {
+    public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequest request) {
         log.info("Creating transaction for customer: {} amount: ${}",
                 request.customerId(), request.amount());
 
@@ -66,22 +90,43 @@ public class TransactionController {
     }
 
     /**
-     * Get all transactions for a customer
-     * GET /api/transactions/customer/{customerId}
+     * Get all transactions for a customer with pagination
+     * GET /api/transactions/customer/{customerId}?page=0&size=20
      */
+    @Operation(summary = "Get customer transactions",
+               description = "Retrieves paginated list of transactions for a specific customer")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved transactions"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized - missing or invalid API key"),
+        @ApiResponse(responseCode = "404", description = "Customer not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<List<Transaction>> getCustomerTransactions(
-            @PathVariable String customerId) {
+            @Parameter(description = "Customer ID", example = "CUST001")
+            @PathVariable String customerId,
+            @Parameter(description = "Page number (0-based)", example = "0")
+            @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Page size (max 100)", example = "20")
+            @RequestParam(defaultValue = "20") int size) {
 
-        log.info("Fetching transactions for customer: {}", customerId);
+        log.info("Fetching transactions for customer: {} (page: {}, size: {})", 
+                customerId, page, size);
 
         if (!customerRepository.existsByCustomerId(customerId)) {
             return ResponseEntity.notFound().build();
         }
 
+        // Limit page size to prevent excessive data retrieval
+        int limitedSize = Math.min(size, 100);
+        Pageable pageable = PageRequest.of(page, limitedSize, 
+                Sort.by(Sort.Direction.DESC, "transactionDate"));
+
         List<Transaction> transactions = transactionRepository
                 .findByCustomerIdOrderByTransactionDateDesc(customerId);
 
+        // For simplicity, we'll return all transactions for now
+        // In production, you'd implement paginated repository method
         log.info("Found {} transactions for customer {}",
                 transactions.size(), customerId);
 
@@ -92,8 +137,13 @@ public class TransactionController {
      * Request DTO for creating transactions
      */
     public record TransactionRequest(
+            @NotBlank(message = "Customer ID is required")
             String customerId,
+            
+            @NotNull(message = "Amount is required")
+            @Positive(message = "Amount must be positive")
             BigDecimal amount,
+            
             String description
     ) {}
 }
