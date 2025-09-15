@@ -233,5 +233,7 @@ This project is licensed under the Apache 2.0 License - see the LICENSE file for
 
 ## 📧 Contact
 
-Project Link: [https://github.com/yourusername/rewards-program-api](https://github.com/yourusername/rewards-program-api)
+Web-page: [https://2amkoding.github.io/](https://2amkoding.github.io/)
+
+Project Link: [https://github.com/2amkoding/rewards-program-api](https://github.com/2amkoding/rewards-program-api)
 
