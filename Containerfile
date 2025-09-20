@@ -16,7 +16,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Runtime
-FROM docker.io/eclipse-temurin:17-jre-alpine
+FROM docker.io/library/amazoncorretto:17-alpine
 
 # Create user (Podman runs rootless by default, but we add for compatibility)
 RUN addgroup -g 1000 spring && \
