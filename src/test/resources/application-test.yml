@@ -4,10 +4,6 @@ spring:
       # Will be overridden by Testcontainers
       uri: mongodb://localhost:27017/rewardsdb-test
 
-  # Disable data initialization in tests
-  profiles:
-    active: test
-
 logging:
   level:
     com.portalsplatform.api: DEBUG
