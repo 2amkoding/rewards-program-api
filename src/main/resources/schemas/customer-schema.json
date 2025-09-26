@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema#",
+  "title": "Customer",
+  "description": "A customer in the rewards program",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for a customer",
+      "maxLength": 36
+    },
+    "firstName": {
+      "type": "string",
+      "description": "The customer's first name",
+      "maxLength": 50,
+      "pattern": "^[a-zA-Z]+$"
+    },
+    "lastName": {
+      "type": "string",
+      "description": "The customer's last name",
+      "maxLength": 50,
+      "pattern": "^[a-zA-Z]+$"
+    },
+    "email": {
+      "type": "string",
+      "description": "The customer's email address",
+      "format": "email",
+      "maxLength": 254
+    }
+  },
+  "required": ["id", "firstName", "lastName", "email"],
+  "additionalProperties": false
+}

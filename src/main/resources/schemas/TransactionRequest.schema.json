@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema#",
+  "title": "TransactionRequest",
+  "description": "Schema for creating a new transaction",
+  "type": "object",
+  "properties": {
+    "customerId": {
+      "description": "The unique identifier for the customer",
+      "type": "string",
+      "minLength": 1,
+		"maxLength":10
+    },
+    "amount": {
+      "description": "The transaction amount, must be positive",
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "description": {
+      "description": "An optional description for the transaction, limited to 500 safe characters",
+      "type": "string",
+      "maxLength": 500,
+      "pattern": "^[\\w\\s.,'!?()-]*$"
+    }
+  },
+  "required": [
+    "customerId",
+    "amount"
+  ],
+  "additionalProperties": false
+}
