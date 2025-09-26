@@ -188,3 +188,4 @@ All API endpoints require the `X-API-Key` header:
 - Regular MongoDB backups
 - Container registry for images
 - Configuration backup
+
