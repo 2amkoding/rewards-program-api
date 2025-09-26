@@ -5,8 +5,12 @@ import com.portalsplatform.api.service.RewardsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import com.portalsplatform.api.security.JsonSchemaValidationFilter;
+import com.portalsplatform.api.security.ApiKeyAuthFilter;
+import com.portalsplatform.api.security.RateLimitingFilter;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -17,10 +21,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.*;
 
 @WebMvcTest(RewardsController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class RewardsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    // Disable custom filters by mocking them in slice tests
+    @MockBean
+    private JsonSchemaValidationFilter jsonSchemaValidationFilter;
+
+    @MockBean
+    private ApiKeyAuthFilter apiKeyAuthFilter;
+
+    @MockBean
+    private RateLimitingFilter rateLimitingFilter;
 
     @MockBean
     private RewardsService rewardsService;
