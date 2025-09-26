@@ -57,6 +57,14 @@ public class RateLimitingFilter extends OncePerRequestFilter {
         return apiKey != null ? apiKey : request.getRemoteAddr();
     }
 
+    /**
+     * Test helper to ensure tests don't interfere with each other via shared rate limit state.
+     * Safe to call in tests; has no effect on production behavior beyond clearing in-memory counters.
+     */
+    public void resetCountersForTesting() {
+        requestCounts.clear();
+    }
+
     @Override
     public void destroy() {
         scheduler.shutdown();

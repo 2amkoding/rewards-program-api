@@ -17,6 +17,7 @@ public class SecurityConfig {
 
     private final ApiKeyAuthFilter apiKeyAuthFilter;
     private final RateLimitingFilter rateLimitingFilter;
+    private final JsonSchemaValidationFilter jsonSchemaValidationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,6 +33,7 @@ public class SecurityConfig {
             )
             .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterAfter(apiKeyAuthFilter, RateLimitingFilter.class)
+            .addFilterAfter(jsonSchemaValidationFilter, ApiKeyAuthFilter.class)
             .build();
     }
 }
