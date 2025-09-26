@@ -9,9 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -53,7 +50,7 @@ public class TransactionController {
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping
-    public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequest request) {
+    public ResponseEntity<?> createTransaction(@RequestBody TransactionRequest request) {
         log.info("Creating transaction for customer: {} amount: ${}",
                 request.customerId(), request.amount());
 
@@ -137,11 +134,8 @@ public class TransactionController {
      * Request DTO for creating transactions
      */
     public record TransactionRequest(
-            @NotBlank(message = "Customer ID is required")
             String customerId,
-            
-            @NotNull(message = "Amount is required")
-            @Positive(message = "Amount must be positive")
+
             BigDecimal amount,
             
             String description

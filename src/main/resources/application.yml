@@ -51,5 +51,15 @@ springdoc:
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
 
+# Schema Validation Rules
+schema-validation:
+  rules:
+    - path: /api/customers
+      method: POST
+      schema: customer-schema.json
+    - path: /api/transactions
+      method: POST
+      schema: TransactionRequest.schema.json
+
 
 

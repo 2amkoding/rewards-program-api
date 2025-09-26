@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema#",
+  "title": "TransactionResponse",
+  "description": "Schema for a transaction response",
+  "type": "object",
+  "properties": {
+    "transactionId": {
+      "description": "The unique identifier for the transaction",
+      "type": "string",
+      "format": "uuid",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "customerId": {
+      "description": "The unique identifier for the customer",
+      "type": "string",
+      "maxLength": 36
+    },
+    "amount": {
+      "description": "The transaction amount",
+      "type": "number",
+      "minimum": 0
+    },
+    "description": {
+      "description": "An optional description for the transaction",
+      "type": "string",
+      "maxLength": 500,
+      "pattern": "^[\\w\\s.,'!?()-]*$"
+    },
+    "transactionDate": {
+      "description": "The date and time of the transaction",
+      "type": "string",
+      "format": "date-time"
+    },
+    "points": {
+        "description": "The number of points awarded for the transaction",
+        "type": "integer",
+        "minimum": 0
+    }
+  },
+  "required": [
+    "transactionId",
+    "customerId",
+    "amount",
+    "transactionDate",
+    "points"
+  ],
+  "additionalProperties": false
+}
